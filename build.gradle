@@ -1,0 +1,33 @@
+buildscript { // <--- ADD THIS BLOCK
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        // This is the Android Gradle Plugin, keep your existing version if it's different and higher
+        classpath 'com.android.tools.build:gradle:7.3.0' // Make sure this matches your project's requirement
+
+        // THIS IS THE MISSING GOOGLE SERVICES PLUGIN DEPENDENCY
+        classpath 'com.google.gms:google-services:4.4.1' // Use the latest stable version from Firebase docs (e.g., 4.4.1 or higher)
+                                                         // As of today, 4.4.1 is common. Check https://firebase.google.com/docs/android/setup for latest.
+    }
+} // <--- END OF ADDED BLOCK
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+rootProject.buildDir = "../build"
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+}
+subprojects {
+    project.evaluationDependsOn(":app")
+}
+
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
+}
